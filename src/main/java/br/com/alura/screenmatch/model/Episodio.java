@@ -41,6 +41,10 @@ public class Episodio {
         return titulo;
     }
 
+    public Double getAvaliacao() {
+        return avaliacao;
+    }
+
     @Override
     public String toString() {
         return "temporada -> " + temporada +

@@ -88,7 +88,7 @@ public class Principal {
         System.out.println("Digite um trecho do título do episódio: ");
         var trechoDoTitulo = leitura.nextLine();
         Optional<Episodio> episodioBuscado = episodios.stream()
-                .filter(e -> e.getTitulo().contains(trechoDoTitulo))
+                .filter(e -> e.getTitulo().toUpperCase().contains(trechoDoTitulo.toUpperCase()))
                 .findFirst();
 
         if (episodioBuscado.isPresent()) {
@@ -97,5 +97,19 @@ public class Principal {
         } else {
             System.out.println("Episódio não encontrado!");
         }
+
+        Map<Integer, Double> avaliacoesPorTemporada = episodios.stream()
+                .filter(e -> e.getAvaliacao() > 0.0)
+                .collect(Collectors.groupingBy(Episodio::getTemporada,
+                        Collectors.averagingDouble(Episodio::getAvaliacao)));
+        System.out.println(avaliacoesPorTemporada);
+
+        DoubleSummaryStatistics est = episodios.stream()
+                .filter(e -> e.getAvaliacao() > 0.0)
+                .collect(Collectors.summarizingDouble(Episodio::getAvaliacao));
+        System.out.println("Média: " + est.getAverage());
+        System.out.println("Melhor episódio: " + est.getMax());
+        System.out.println("Pior episódio: " + est.getMin());
+        System.out.println("Quantidade: " + est.getCount());
     }
 }
